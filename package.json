@@ -1,0 +1,39 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "generate-rss": "node rss.js"
+  },
+  "dependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0",
+    "eslint-config-next": "^13.2.4",
+    "feed": "^4.2.2",
+    "firebase": "^10.5.0",
+    "isomorphic-fetch": "^3.0.0",
+    "js-cookie": "^3.0.1",
+    "jsonwebtoken": "^9.0.0",
+    "next": "^13.5.11",
+    "next-share": "^0.20.0",
+    "nextjs-progressbar": "^0.0.16",
+    "nprogress": "^0.2.0",
+    "prop-types": "^15.8.1",
+    "query-string": "^8.1.0",
+    "react": "^18.3.1",
+    "react-datepicker": "^4.11.0",
+    "react-dom": "^18.3.1",
+    "react-google-button": "^0.7.2",
+    "slugify": "^1.6.6",
+    "suneditor": "^2.45.1",
+    "suneditor-react": "^3.6.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28"
+  }
+}

@@ -1,0 +1,375 @@
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: none;
+}
+
+.modalContent {
+  background-color: #fff;
+  color: black;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+
+
+.se-component figure{
+  margin: auto !important;
+  display: block !important;
+  padding-top: 15px;
+  padding-bottom: 30px;
+  max-width: 100% !important;
+  
+}  
+
+.se-component figure img{
+  max-width: 98% !important;
+}
+
+
+.postcontent ul{
+  margin-bottom: 40px;
+}
+.postcontent ol{
+  margin-bottom: 40px;
+}
+.postcontent li{
+  font-size: 17px !important;
+  margin-left: 60px;
+  word-spacing: 1.5px !important;
+  line-height: 28px !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+  margin-bottom: 20px;
+}
+
+/* ------------- NProgress ------------------------------ */
+
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: var(--npprogress-color);
+
+  position: fixed;
+  z-index: 1031;
+  top: 0px;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px var(--npprogress-color), 0 0 5px var(--npprogress-color);
+  opacity: 1.0;
+
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+      -ms-transform: rotate(3deg) translate(0px, -4px);
+          transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* Remove these to get rid of the spinner */
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  top: 15px;
+  right: 15px;
+}
+
+#nprogress .spinner-icon {
+  width: 18px;
+  height: 50px;
+  box-sizing: border-box;
+
+  border: solid 2px transparent;
+  border-top-color: var(--npprogress-color);
+  border-left-color: var(--npprogress-color);
+  border-radius: 50%;
+
+  -webkit-animation: nprogress-spinner 400ms linear infinite;
+          animation: nprogress-spinner 400ms linear infinite;
+}
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+
+@-webkit-keyframes nprogress-spinner {
+  0%   { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes nprogress-spinner {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+
+
+#myinputs input[type=text] {
+  padding: 5px 10px;
+}
+
+body {
+  background-color: var(--background-color);
+}
+
+pre{
+  margin-top: 25px;
+  margin-bottom: 25px;
+  /* border: 1px solid rgb(217, 214, 214); */
+  padding-top: 35px;
+  padding-bottom: 35px;
+  padding-right: 25px;
+  padding-left: 25px;
+  font-size: 15px;
+  background-color: rgb(6, 1, 11);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.9;
+}
+
+
+.sun-editor .se-wrapper{
+  min-height: 1200px;
+}
+
+.sun-editor-editable li {
+  font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif !important;
+}
+
+:root {
+  --adminBack-color:rgb(239, 234, 234);
+  --border-color:rgb(167, 161, 161);
+  --npprogress-color: red;
+  --text-color: #080808;
+  --text-color2: #080808;
+  --background-color: #ffffff;
+  --post-backgroundcolor: white;
+  --sign-in-outboxcolor: white;
+  --span-color: black;
+  --userdash-color: white;
+  --editor-background-color: whitesmoke;
+  --box-backcolor: white;
+  --message-color: rgb(48, 124, 10);
+  --search-result-color: blue;
+}
+
+.darkmode {
+  --adminBack-color:#090c11;
+  --border-color:white;
+  --npprogress-color: red;
+  --text-color: white;
+  --text-color2: rgb(178, 181, 187);
+  --background-color: #090c11;
+  --post-backgroundcolor: #1a253a;
+  --sign-in-outboxcolor: rgb(10, 38, 57);
+  --span-color: white;
+  --userdash-color: black;
+  --editor-background-color: black;
+  --box-backcolor: #000306;
+  --message-color: white;
+  --search-result-color: white;
+}
+
+ /* ------------------------ SunEditor --------------------- */
+
+.se-image-container img {
+  display: block;
+  margin: auto;
+
+}
+
+.sun-editor .se-wrapper .se-wrapper-inner{
+  background-color: var(--background-color) !important;
+}
+
+
+.se-wrapper-inner {
+  background-color: var(--editor-background-color) !important;
+  color: var(--text-color) !important;
+}
+
+.se-wrapper p span{
+  color: var(--text-color) !important;
+}
+
+.se-wrapper p{
+  color: var(--text-color) !important;
+}
+
+
+table {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+
+td {
+  border: 1px solid grey;
+  padding-right: 8px;
+  padding-left: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  word-spacing: 1.5px;
+  font-size: 16px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+
+.sun-editor .se-wrapper .se-placeholder {
+  font-size: 17px !important;
+  margin-bottom: 50px !important;
+}
+
+.sun-editor .se-toolbar {
+  /* background-color: rgb(255 251 237) !important; */
+  background-color: white !important;
+}
+
+.sun-editor .se-btn-module-border {
+  border: none !important;
+}
+/* ------------------------ SunEditor --------------------- */
+
+
+/* ----------------------------------------------ScrollBar----------------------------------------- */
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px;
+
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(184, 184, 184);
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border: 1px solid white;
+  background: black;
+}
+/* ----------------------------------------------ScrollBar----------------------------------------- */
+
+
+
+
+textarea {
+  padding: 10px;
+  font-size: 15px;
+  outline: none;
+  margin-top: 15px;
+}
+
+
+@media screen and (max-width:1148px) {
+
+  textarea {
+    width: 75%;
+  }
+
+}
+
+@media screen and (max-width:480px){
+         table{
+          overflow-x: auto;
+          display: block;
+         }
+}
+
+@media screen and (max-width:856px) {
+
+  textarea {
+    border: 1px solid grey;
+  }
+  .postcontent li{
+    margin-left: 30px;
+  }
+}
+
+
+p,
+p span {
+  font-size: 17px !important;
+  word-spacing: 1.5px !important;
+  margin-bottom: 50px !important;
+  line-height: 28px !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+
+p span{
+  color: white !important;
+}
+
+p a {
+  text-decoration: none;
+  color: blue;
+}
+
+
+h1,h2{
+  margin-bottom: 10px !important;
+  margin-top: 10px !important;
+  font-weight: 800 !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+  /* text-transform: capitalize; */
+}
+
+h1 {
+  font-size: 33px !important;
+}
+
+h2 {
+  font-size: 28px !important;
+}
+
+h3 {
+  margin-top: 10px !important;
+  font-size: 21px !important;
+  font-weight: 700 !important;
+}
+
+
+
+h4,h5,h6{
+  font-size: 20px !important;
+  margin-bottom: 10px !important;
+  font-weight: 700 !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+}
+

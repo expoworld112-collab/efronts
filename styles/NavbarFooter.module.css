@@ -1,0 +1,296 @@
+.userdash {
+  color: white;
+  /* border-radius: 30px; */
+  padding-top: 9px;
+  padding-bottom: 9px;
+  margin-left: 55px;
+  margin-right: 10px;
+  font-size: 15px;
+}
+
+
+.nav {
+  width: 100%;
+  height: 55px;
+  background-image: url(/Nav.jpg);
+  /* border-bottom: 1px solid rgb(255, 255, 255); */
+  line-height: 50px;
+  padding: 0px 60px;
+  display: block;
+  top: 0;
+  position: fixed;
+  z-index: 10;
+}
+
+
+.span {
+  color: white;
+  font-size: 25px;
+  display: none;
+  float: right;
+  cursor: pointer;
+  float: right;
+}
+
+#check {
+  display: none;
+}
+
+.nav .logo {
+  float: left;
+  font-size: 22px;
+  cursor: pointer;
+  font-weight: 800;
+  font-family: 'Source Sans Pro', 'Arial';
+  letter-spacing: 1.7px;
+  color: white;
+  /* animation: neon .08s ease-in-out infinite alternate; */
+  animation: neon 1s ease-in-out infinite alternate, pulsate 1.5s ease-out infinite;
+}
+
+
+
+@keyframes neon {
+  from {
+    text-shadow:
+      0 0 1px rgba(202, 228, 225, 0.4),
+      0 0 4px rgba(202, 228, 225, 0.15),
+      0 0 2px rgba(30, 132, 242, 0.2),
+      0 0 3px rgba(30, 132, 242, 0.4),
+      0 0 5px rgba(30, 132, 242, 0.35),
+      0 0 7px rgba(30, 132, 242, 0.4);
+  }
+
+  to {
+    text-shadow:
+      0 0 1px rgba(202, 228, 225, 0.5),
+      0 0 4px rgba(202, 228, 225, 0.2),
+      0 0 2px rgba(30, 132, 242, 0.25),
+      0 0 3px rgba(30, 132, 242, 0.45),
+      0 0 5px rgba(30, 132, 242, 0.4),
+      0 0 7px rgba(30, 132, 242, 0.5);
+  }
+}
+
+
+
+
+
+
+
+.nav ul {
+  float: right;
+  display: block;
+  margin-right: -35px;
+}
+
+.nav ul li {
+  list-style: none;
+  display: inline-block;
+}
+
+
+.nav ul li a {
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  /* padding: 0px 13.5px; */
+  padding: 21px;
+  color: white;
+  letter-spacing: 1px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+
+
+.nav ul li a:hover {
+  background-color: black;
+  cursor: pointer;
+}
+
+
+@media screen and (min-width:1197px) {
+  .nav ul {
+    display: block !important;
+  }
+}
+
+
+@media screen and (max-width:1197px) {
+  .nav {
+    padding: 0px 0px;
+    position: relative;
+    /* position: sticky; */
+  }
+
+  .nav .logo {
+    margin-left: 20px;
+    font-size: 20px;
+  }
+
+  .span {
+    display: block;
+    margin-right: 20px;
+  }
+
+  .nav ul {
+    width: 100%;
+    background-image: url(/Nav.jpg);
+    display: none;
+    text-align: center;
+    transition: 0.5s ease;
+    margin-bottom: 30px;
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-top: -2px;
+    border-bottom: 1px solid grey;
+  }
+
+  .nav ul li {
+    display: block;
+  }
+}
+
+
+/*-------------------------         Navbar ------------------------------------------------- */
+
+
+
+
+/*-------------------------         Footer   ------------------------------------------------- */
+
+
+.footerbackground {
+  /* background-color: black; */
+  background-color: rgb(20, 19, 19);
+}
+
+
+.footergrid {
+  /* margin-top: 40px; */
+  padding: 10px;
+  align-items: self-start;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: auto auto auto auto;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+
+
+.footerbox1 {
+  color: white;
+  line-height: 38px;
+  list-style: none;
+  max-width: 500px;
+  padding-left: 35px;
+}
+
+
+.footerbox ul {
+  list-style: none;
+}
+
+.footerbox {
+  color: white;
+  line-height: 38px;
+}
+
+
+.footerbox a {
+  text-decoration: none;
+  color: white;
+}
+
+.footerbox a:hover {
+  text-decoration: underline;
+}
+
+.Footerlogos {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.Footerlogos a {
+  text-decoration: none;
+}
+
+.footerheading00 {
+  animation: neon 1s ease-in-out infinite alternate, pulsate 1.5s ease-out infinite;
+  color: white;
+  font-weight: 800;
+  font-size: 25px;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+.footerheading {
+  color: white;
+  font-weight: 800;
+  font-size: 23px;
+  margin-bottom: 15px;
+  letter-spacing: 1.5px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+.footercopyright {
+  margin-top: 20px;
+  font-weight: 700;
+  word-spacing: 1.5px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  color: white;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  background-color: black;
+}
+
+
+
+@media screen and (max-width:1411px) {
+  .footergrid {
+    grid-gap: 20px;
+  }
+}
+
+
+@media screen and (max-width:1231px) {
+  .footergrid {
+    grid-gap: 50px;
+    grid-template-columns: auto auto auto;
+    padding-top: 20px;
+  }
+}
+
+@media screen and (max-width:868px) {
+  .footergrid {
+    grid-template-columns: auto auto;
+  }
+
+  .footerbox {
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+}
+
+@media screen and (max-width:538px) {
+  .footergrid {
+    display: block;
+  }
+
+  .Footerlogos {
+    text-align: center;
+  }
+
+  .footerbox1 {
+    padding-left: 0px;
+    margin: 7px;
+  }
+}
+
+
+/*-------------------------         Footer   ------------------------------------------------- */

@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+
+Disallow: /user/
+Disallow: /admin/
+
+
+# Sitemaps
+Sitemap: https://dirmatech.com/sitemap.xml

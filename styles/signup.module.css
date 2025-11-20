@@ -1,0 +1,263 @@
+.backImg{
+  background-image: url(/Back.webp);
+}
+
+.wrapper{
+  color: white;
+  background-color: black;
+  opacity: 0.9;
+    width: 330px;
+    padding: 1rem 0 1.6rem 0;
+    margin-right:auto;
+    margin-left:auto;
+    margin-top: 30px;
+    border-radius: 10px;
+    text-align: center;
+    /* box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); */
+    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; */
+   overflow: hidden;
+   border: 1px solid white;
+  }
+  .heading{
+    font-size: 1.8rem;
+    font-family:  'Source Sans Pro', 'Arial';
+    font-weight: 800;
+   
+  }
+  .paragraph{
+    margin-bottom: 1.7rem;
+    margin-top:10px ;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .inputs{
+    width: 85%;
+    outline: none;
+    border: none;
+    background: rgb(230, 233, 233);
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    color: black;
+    font-size: 15px;
+  }
+
+  .inputs:focus { 
+    box-shadow:0 0 2px black;
+}
+
+  .recover{
+    text-align: right;
+    font-size: 0.9rem;
+    margin: 0.2rem 1.7rem 0 0;
+    margin-top: 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 600;
+  }
+  .recover a{
+    text-decoration: none;
+    color: rgb(30, 30, 206);
+    
+  }
+  .button{
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    padding: 10px 0;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    width: 40%;
+    background-color: #050014;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.8px;
+    border: 1px solid white;
+  }
+
+  .button0000{
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    padding: 12px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    background-color: #050014;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.8px;
+    border: 1px solid white;
+    min-width: 15%;
+  }
+
+
+
+.forgotpassbtn{
+  font-size: 0.8rem;
+  padding: 10px 0;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  width: 48%;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 0.8px;
+  /* border: 1px solid white; */
+  background-color: rgb(241, 12, 12);
+  /* opacity: 0.8; */
+}
+
+.forgotpassbtn a{
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+}
+
+.forgotpassbtn:hover{
+  opacity: 0.7;
+}
+
+
+.button0000:hover{
+  opacity: 0.7;
+}
+
+
+  .button:hover{
+    opacity: 0.6;
+   
+  }
+  .or{
+    font-size: 0.8rem;
+    margin-top: 1.5rem;
+  }
+
+  .notmember{
+    font-size: 1rem;
+    margin-top: 1.4rem;
+    margin-bottom: 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 600;
+  }
+  .notmember a{
+    /* color: tomato; */
+    color: rgb(71, 218, 234);
+    text-decoration: none;
+  }
+
+  .notmember a:hover{
+    text-decoration: underline;
+  }
+  
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+.showLoading{
+    margin-top: 30px;
+    margin-top: 18px;
+   text-align: center;
+   font-size: 20px;
+   color: white;
+}
+
+.showError{
+    width: 35%;
+    background-color: rgb(230, 27, 27);
+    color: rgb(71 10 10);
+    text-align: center;
+    display: block;
+    margin: auto;
+    margin-top: 30px;
+    font-size: 19px;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.showMessage{
+    background-color: rgb(92, 238, 92);
+    color: rgb(36 139 36);
+    text-align: center;
+    width: 30%;
+    display: block;
+    margin: auto;
+    margin-top: 30px;
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+
+
+
+
+.forgotpassform{
+  margin-top: 80px;
+  text-align: center;
+}
+
+
+.forgotpassbtn00{
+  font-size: 0.9rem;
+  padding: 10px 0;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  width: 60%;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 0.8px;
+  background-color: red;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 11px;
+  padding-right: 11px;
+  text-decoration: none;
+}
+
+.forgotpassbtn00:hover{
+  opacity: 0.7;
+}
+
+
+.forgotpassbtn0022{
+  font-size: 0.9rem;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  width: 70%;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 0.8px;
+  background-color: red;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 11px;
+  padding-right: 11px;
+  text-decoration: none;
+}
+
+.forgotpassbtn0022:hover{
+  opacity: 0.7;
+}
+
+
+@media screen and (max-width:1000px){
+  .showError,.showLoading,.showMessage{
+          min-width: 80%;
+  }
+    }
+
+
+
+
+@media screen and (max-width:350px){
+.wrapper{
+        max-width: 250px;
+}
+  }

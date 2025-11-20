@@ -1,0 +1,130 @@
+
+.center {
+    text-align: center;
+  }
+  
+  .center h3{
+    color: #228080;
+  }
+  .center h3 span{
+    color: rgb(32, 129, 129);
+  }
+
+  .fileInputLabel {
+    display: inline-block;
+    padding: 7px 12px;
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .fileInput {
+    display: none;
+  }
+
+  .fileInputLabel:hover{
+    opacity: 0.7;
+  }
+
+
+  .gallaryimages{
+    object-fit: cover;
+    margin: 10px;
+    height: 160px;
+    width: 170px;
+    border: 1px solid grey;
+  }
+
+
+  .pagination{
+    text-align: center;
+  }
+
+
+  .pagination span{
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+
+  .pagination button {
+    cursor: pointer;
+    padding-right:10px;
+    padding-left: 10px;
+    padding-bottom: 6px;
+    padding-top: 6px;
+    background-color: #000000;
+    color: white;
+    border-radius: 7px;
+    outline: none;
+    border: none;
+   font-weight: 700;
+   font-size: 12px;
+  }
+
+
+  .pagination button:hover{
+    color: #3498db;
+  }
+
+
+  .pagination button:disabled {
+    background-color: #000000;
+    border-color:grey;
+    color: #999999;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+
+
+  .gridparent{
+    max-width: 1100px;
+  }
+
+  .grid{
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .btnparent button, .mbtn0, .mbtn1{
+    background-color: #000000;
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+.mbtn0{
+    margin-right: 10px;
+}
+
+.mbtn1{
+  margin-left: 10px;
+}
+
+
+.btn{
+  margin-top: 8px;
+}
+
+  .btnparent button:hover, .mbtn0:hover, .mbtn1:hover{
+    opacity: 0.7;
+  }
+
+  .btnparent{
+    text-align: center;
+  }
+
+  .card{
+    margin-bottom: 30px;
+  }
