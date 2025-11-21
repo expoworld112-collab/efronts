@@ -80,14 +80,26 @@ export const signup = async (user) => {
   return response.json();
 };
 
+// export const signin = async (user) => {
+//   const response = await fetch(`${API}/signin`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(user),
+//     credentials: "include",
+//   });
+//   await handleResponse(response);
+//   return response.json();
+// };
 export const signin = async (user) => {
   const response = await fetch(`${API}/signin`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(user),
-    credentials: "include",
-  });
-  await handleResponse(response);
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(user),
+  credentials: "include"
+})
+
+
+  await handleResponse(response); // your custom error handling
   return response.json();
 };
 
