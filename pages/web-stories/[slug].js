@@ -180,29 +180,67 @@ const Stories = ({ story, errorCode }) => {
 // -------------------------------------------------------
 
 export async function getStaticPaths() {
-  const slugs = await getAllBlogSlugs();
+    let slugs = [];
 
-  return {
-    paths: slugs.map(s => ({ params: { slug: s.slug } })),
-    fallback: "blocking",
-  };
-}
+    try {
+        const data = await allslugs();
 
-// -------------------------------------------------------
-
-export async function getStaticProps({ params }) {
-  try {
-    const story = await singleStory(params.slug);
-
-    if (!story) {
-      return { props: { errorCode: 404 } };
+        // Ensure it's an array
+        if (Array.isArray(data)) {
+            slugs = data;
+        }
+    } catch (err) {
+        console.error("Error loading slugs:", err);
+        slugs = [];
     }
 
-    return { props: { story } };
-  } catch (error) {
-    console.error("getStaticProps error:", error);
-    return { props: { errorCode: 500 } };
-  }
+    // Safe return
+    return {
+        paths: slugs.map((s) => ({
+            params: { slug: s.slug || s },
+        })),
+        fallback: 'blocking' // prevents build crash
+    };
 }
+// -------------------------------------------------------
 
+// export async function getStaticProps({ params }) {
+//   try {
+//     const story = await singleStory(params.slug);
+
+//     if (!story) {
+//       return { props: { errorCode: 404 } };
+//     }
+
+//     return { props: { story } };
+//   } catch (error) {
+//     console.error("getStaticProps error:", error);
+//     return { props: { errorCode: 500 } };
+//   }
+// }
+export async function getStaticProps({ params }) {
+    let story = null;
+
+    try {
+        const data = await singleStory(params.slug);
+
+        if (data && typeof data === "object") {
+            story = data;
+        }
+    } catch (err) {
+        console.error("Error loading story:", err);
+    }
+
+    // Prevent crash if null
+    if (!story) {
+        return {
+            notFound: true
+        };
+    }
+
+    return {
+        props: { story },
+        revalidate: 10
+    };
+}
 export default Stories;

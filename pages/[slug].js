@@ -189,7 +189,29 @@ const SingleBlog0 = ({ blog, errorCode }) => {
 //     return { paths: [], fallback: "blocking" };
 //   }
 // }
+export async function getStaticPaths() {
+    let slugs = [];
 
+    try {
+        const data = await allslugs();
+
+        // Ensure it's an array
+        if (Array.isArray(data)) {
+            slugs = data;
+        }
+    } catch (err) {
+        console.error("Error loading slugs:", err);
+        slugs = [];
+    }
+
+    // Safe return
+    return {
+        paths: slugs.map((s) => ({
+            params: { slug: s.slug || s },
+        })),
+        fallback: 'blocking' // prevents build crash
+    };
+}
 export const allslugs = async () => {
   try {
     const res = await fetch(`${API}/stories/slugs`);
