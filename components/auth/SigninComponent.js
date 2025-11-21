@@ -16,8 +16,8 @@ const SigninComponent = () => {
 
   const { email, password, error, loading, message, showForm } = values;
 
+  // Redirect if already authenticated
   useEffect(() => {
-    // Redirect if already authenticated
     if (isAuth()) {
       Router.push(isAuth().role === 1 ? '/admin' : '/user');
     }
@@ -33,7 +33,7 @@ const SigninComponent = () => {
 
     try {
       const user = { email, password };
-      const data = await signin(user); // your API call
+      const data = await signin(user);
 
       if (data && data.error) {
         setValues({ ...values, error: data.error, loading: false });
@@ -47,46 +47,46 @@ const SigninComponent = () => {
     }
   };
 
-  const showLoading = () => (loading ? <div className={styles.showLoading}>Loading...</div> : '');
-  const showError = () => (error ? <div className={styles.showError}>{error}</div> : '');
-  const showMessage = () => (message ? <div className={styles.showMessage}>{message}</div> : '');
+  const showLoading = () => (loading ? <div className={styles.showLoading}>Loading...</div> : null);
+  const showError = () => (error ? <div className={styles.showError}>{error}</div> : null);
+  const showMessage = () => (message ? <div className={styles.showMessage}>{message}</div> : null);
 
   const signinForm = () => (
     <div className={styles.wrapper}>
       <h1 className={styles.heading}>Hello Again!</h1>
-      <p className={styles.paragraph}>Welcome back you've <br /> been missed!</p>
+      <p className={styles.paragraph}>Welcome back, you've <br /> been missed!</p>
 
       <form onSubmit={handleSubmit}>
         <input
           className={styles.inputs}
+          type="email"
+          name="email"
+          placeholder="Email"
           value={email}
           onChange={handleChange('email')}
-          name="email"
-          type="email"
-          placeholder="Email"
           autoComplete="email"
           required
         />
-
         <input
           className={styles.inputs}
+          type="password"
+          name="password"
+          placeholder="Password"
           value={password}
           onChange={handleChange('password')}
-          name="password"
-          type="password"
-          placeholder="Password"
           autoComplete="current-password"
           required
         />
-
         <button className={styles.button}>Sign In</button>
-
-        <div className={styles.notmember}>
-          Not a member? &nbsp; <Link href="/signup">Register Now</Link>
-        </div>
       </form>
 
-      <Link className={styles.forgotpassbtn00} href="/auth/password/forgot">Forgot Password</Link>
+      <div className={styles.notmember}>
+        Not a member? &nbsp;<Link href="/signup">Register Now</Link>
+      </div>
+
+      <Link className={styles.forgotpassbtn00} href="/auth/password/forgot">
+        Forgot Password
+      </Link>
 
       <div style={{ marginTop: '20px' }}>
         <a
