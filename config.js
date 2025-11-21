@@ -1,5 +1,5 @@
 export const API = "https://ebacks-tau.vercel.app/api";
-export const DOMAIN = "https://coding4u-project.vercel.app";
+export const DOMAIN = "https://efronts-qwtfxsthi-expos-projects-8ebd0dc9.vercel.app/";
 export const BACKEND = "https://ebacks-tau.vercel.app/";
 
 
