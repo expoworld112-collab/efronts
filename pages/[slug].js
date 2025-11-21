@@ -165,12 +165,31 @@ const SingleBlog0 = ({ blog, errorCode }) => {
 
 
 export async function getStaticPaths() {
-    const slugs = await getAllBlogSlugs();
-    const excludedSlugs = ['/admin/edit-blogs', '/admin/blog', '/admin/edit-story', '/admin/web-story'];
-    const filteredSlugs = slugs.filter((slugObject) => !excludedSlugs.includes(slugObject.slug));
-    const paths = filteredSlugs.map((slugObject) => ({ params: { slug: slugObject.slug } }));
-    return { paths, fallback: "blocking" };
+  try {
+    const res = await fetch(`${API}/stories/slugs`);
+    
+    if (!res.ok) {
+      console.error("Failed to fetch slugs:", res.status);
+      return { paths: [], fallback: "blocking" };
+    }
+
+    const slugs = await res.json();
+
+    if (!Array.isArray(slugs)) {
+      console.error("Invalid slug response:", slugs);
+      return { paths: [], fallback: "blocking" };
+    }
+
+    return {
+      paths: slugs.map(s => ({ params: { slug: s.slug } })),
+      fallback: "blocking",
+    };
+  } catch (err) {
+    console.error("getStaticPaths error:", err);
+    return { paths: [], fallback: "blocking" };
+  }
 }
+
 
 
 
