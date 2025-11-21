@@ -1,15 +1,30 @@
-import AdminDashLayout from "../../components/AdminDashLayout";
+import dynamic from "next/dynamic";
+import Admin from "../../components/auth/Admin";
 
-const AdminIndex = () => {
+// Dynamically import BlogUpdate to prevent SSR errors
+const BlogUpdate = dynamic(() => import("../../components/crud/BlogUpdate"), { ssr: false });
 
+const Blog = () => {
   return (
+    <Admin>
+      <section className="blog-update-section">
+        <h2>Update Blogs</h2>
+        <BlogUpdate />
+      </section>
 
-    <AdminDashLayout>
-      <h2 style={{ color: "var(--text-color)", paddingTop: "7px" }}>Welcome To Admin's DashBoard</h2>
-      <div style={{ color: "var(--text-color)", paddingTop: "10px" }}>You can now create posts, categories, tags, update or delete anyone's posts in this section</div>
-    </AdminDashLayout>
+      <style jsx>{`
+        .blog-update-section {
+          padding: 20px;
+          color: var(--text-color);
+        }
 
+        h2 {
+          font-size: 1.5rem;
+          margin-bottom: 15px;
+        }
+      `}</style>
+    </Admin>
   );
 };
 
-export default AdminIndex;
+export default Blog;
