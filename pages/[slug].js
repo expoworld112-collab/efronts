@@ -164,32 +164,49 @@ const SingleBlog0 = ({ blog, errorCode }) => {
 
 
 
-export async function getStaticPaths() {
+// export async function getStaticPaths() {
+//   try {
+//     const res = await fetch(`${API}/stories/slugs`);
+    
+//     if (!res.ok) {
+//       console.error("Failed to fetch slugs:", res.status);
+//       return { paths: [], fallback: "blocking" };
+//     }
+
+//     const slugs = await res.json();
+
+//     if (!Array.isArray(slugs)) {
+//       console.error("Invalid slug response:", slugs);
+//       return { paths: [], fallback: "blocking" };
+//     }
+
+//     return {
+//       paths: slugs.map(s => ({ params: { slug: s.slug } })),
+//       fallback: "blocking",
+//     };
+//   } catch (err) {
+//     console.error("getStaticPaths error:", err);
+//     return { paths: [], fallback: "blocking" };
+//   }
+// }
+
+export const allslugs = async () => {
   try {
     const res = await fetch(`${API}/stories/slugs`);
-    
-    if (!res.ok) {
-      console.error("Failed to fetch slugs:", res.status);
-      return { paths: [], fallback: "blocking" };
+    const text = await res.text();
+
+    try {
+      const json = JSON.parse(text);
+      return Array.isArray(json) ? json : [];
+    } catch {
+      console.error("Invalid JSON from slug API:", text);
+      return [];
     }
-
-    const slugs = await res.json();
-
-    if (!Array.isArray(slugs)) {
-      console.error("Invalid slug response:", slugs);
-      return { paths: [], fallback: "blocking" };
-    }
-
-    return {
-      paths: slugs.map(s => ({ params: { slug: s.slug } })),
-      fallback: "blocking",
-    };
-  } catch (err) {
-    console.error("getStaticPaths error:", err);
-    return { paths: [], fallback: "blocking" };
+  } catch (e) {
+    console.error("Slug API exception:", e);
+    return [];
   }
-}
-
+};
 
 
 
