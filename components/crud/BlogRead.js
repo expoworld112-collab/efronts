@@ -3,7 +3,6 @@ import express from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import cors from "cors";
 import mongoose from "mongoose";
 import session from "express-session";
 import passport from "passport";
@@ -30,45 +29,45 @@ import { FRONTEND } from "./config.js";
 const app = express();
 
 /* ----------------------------------------------------
-   CORS CONFIG (Global)
+   ALLOWED ORIGINS
 ---------------------------------------------------- */
 const allowedOrigins = [
   "http://localhost:3000",
-  "http://127.0.0.1:3000",
   "https://efronts.vercel.app",
-  "https://efronts-3y6l.vercel.app",
   FRONTEND,
 ].filter(Boolean);
 
-app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true); // allow Postman or server-to-server requests
-    if (allowedOrigins.includes(origin)) return callback(null, true);
-    console.log("❌ CORS BLOCKED:", origin);
-    return callback(new Error("CORS not allowed"));
-  },
-  credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"],
-  methods: ["GET","POST","PUT","DELETE","PATCH","OPTIONS"]
-}));
+/* ----------------------------------------------------
+   CORS MIDDLEWARE (Full-proof)
+---------------------------------------------------- */
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET,POST,PUT,DELETE,PATCH,OPTIONS"
+    );
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type,Authorization"
+    );
+  }
+  if (req.method === "OPTIONS") return res.sendStatus(200); // handle preflight
+  next();
+});
 
-// Preflight OPTIONS request handling
-app.options("*", cors({
-  origin: allowedOrigins,
-  credentials: true,
-  allowedHeaders: ["Content-Type","Authorization"],
-  methods: ["GET","POST","PUT","DELETE","PATCH","OPTIONS"]
-}));
-
-app.set("trust proxy", 1); // Needed for secure cookies on Vercel
+app.set("trust proxy", 1); // for Vercel secure cookies
 
 /* ----------------------------------------------------
-   MONGOOSE CONNECTION
+   DATABASE CONNECTION
 ---------------------------------------------------- */
 mongoose.set("strictQuery", true);
-mongoose.connect(process.env.MONGO_URI)
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("DB connected"))
-  .catch(err => console.log("DB Error =>", err));
+  .catch((err) => console.log("DB Error =>", err));
 
 /* ----------------------------------------------------
    MIDDLEWARE
@@ -78,18 +77,20 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 /* ----------------------------------------------------
-   SESSION CONFIG
+   SESSION CONFIG (Cross-origin safe)
 ---------------------------------------------------- */
-app.use(session({
-  secret: process.env.SESSION_SECRET || "default_secret",
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    httpOnly: true,
-  }
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "default_secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === "production", // HTTPS only
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      httpOnly: true,
+    },
+  })
+);
 
 /* ----------------------------------------------------
    PASSPORT GOOGLE OAUTH
@@ -97,22 +98,27 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.GOOGLE_CALLBACK_URL,
-  scope: ["profile","email"]
-}, async (accessToken, refreshToken, profile, done) => {
-  try {
-    const user = await User.findOne({ email: profile.emails[0].value });
-    done(null, user);
-  } catch(err) {
-    done(err,null);
-  }
-}));
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      scope: ["profile", "email"],
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        const user = await User.findOne({ email: profile.emails[0].value });
+        done(null, user);
+      } catch (err) {
+        done(err, null);
+      }
+    }
+  )
+);
 
-passport.serializeUser((user, done) => done(null,user));
-passport.deserializeUser((user, done) => done(null,user));
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
 
 /* ----------------------------------------------------
    ROUTES
@@ -126,22 +132,26 @@ app.use("/api", formRoutes);
 app.use("/api", imageRoutes);
 app.use("/api", storyRoutes);
 
-app.get("/", (req,res) => res.json({ message: "Backend running" }));
+app.get("/", (req, res) => res.json({ message: "Backend running" }));
 
 /* ----------------------------------------------------
    SIGNIN ROUTE
 ---------------------------------------------------- */
-app.post("/api/signin", async (req,res) => {
+app.post("/api/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if(!user) return res.status(404).json({ message: "User not found" });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-    // TODO: validate password here (bcrypt or similar)
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET || "Div12@", { expiresIn: "10d" });
+    // TODO: Validate password here (bcrypt recommended)
+    const token = jwt.sign(
+      { _id: user._id },
+      process.env.JWT_SECRET || "Div12@",
+      { expiresIn: "10d" }
+    );
 
     res.status(200).json({ user, token });
-  } catch(err) {
+  } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
@@ -150,25 +160,35 @@ app.post("/api/signin", async (req,res) => {
 /* ----------------------------------------------------
    GOOGLE OAUTH ROUTES
 ---------------------------------------------------- */
-app.get("/auth/google", passport.authenticate("google",{ scope:["profile","email"] }));
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 
-app.get("/auth/google/callback", passport.authenticate("google",{
-  successRedirect: FRONTEND,
-  failureRedirect: `${FRONTEND}/signin`
-}));
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: FRONTEND,
+    failureRedirect: `${FRONTEND}/signin`,
+  })
+);
 
-app.get("/login/success", (req,res) => {
-  if(req.user){
-    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET || "Div12@", { expiresIn: "10d" });
+app.get("/login/success", (req, res) => {
+  if (req.user) {
+    const token = jwt.sign(
+      { _id: req.user._id },
+      process.env.JWT_SECRET || "Div12@",
+      { expiresIn: "10d" }
+    );
     res.status(200).json({ user: req.user, token });
   } else {
     res.status(401).json({ message: "Not Authorized" });
   }
 });
 
-app.get("/logout", (req,res,next) => {
-  req.logout(err => {
-    if(err) return next(err);
+app.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
     res.redirect(`${FRONTEND}/signin`);
   });
 });
