@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { signin, isAuth, authenticate } from '../../actions/auth';
 import Router from 'next/router';
 import Link from "next/link";
-import { BACKEND } from "@/config";
 
 const SigninComponent = () => {
   const [values, setValues] = useState({
@@ -18,94 +17,96 @@ const SigninComponent = () => {
   const { email, password, error, loading, message, showForm } = values;
 
   useEffect(() => {
-    isAuth() && Router.push(`/`);
+    // Redirect if already authenticated
+    if (isAuth()) {
+      Router.push(isAuth().role === 1 ? '/admin' : '/user');
+    }
   }, []);
 
+  const handleChange = (name) => (e) => {
+    setValues({ ...values, error: false, [name]: e.target.value });
+  };
 
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setValues({ ...values, loading: true, error: false });
-    const user = { email, password };
 
-    signin(user).then(data => {
+    try {
+      const user = { email, password };
+      const data = await signin(user); // your API call
+
       if (data && data.error) {
         setValues({ ...values, error: data.error, loading: false });
       } else {
         authenticate(data, () => {
-          if (isAuth() && isAuth().role === 1) {
-            Router.push(`/admin`);
-          } else {
-            Router.push(`/user`);
-          }
+          Router.push(isAuth().role === 1 ? '/admin' : '/user');
         });
       }
-    });
-  };
-
-
-
-
-
-
-  const handleChange = name => e => {
-    setValues({ ...values, error: false, [name]: e.target.value });
+    } catch (err) {
+      setValues({ ...values, error: 'Signin failed. Try again.', loading: false });
+    }
   };
 
   const showLoading = () => (loading ? <div className={styles.showLoading}>Loading...</div> : '');
   const showError = () => (error ? <div className={styles.showError}>{error}</div> : '');
   const showMessage = () => (message ? <div className={styles.showMessage}>{message}</div> : '');
 
+  const signinForm = () => (
+    <div className={styles.wrapper}>
+      <h1 className={styles.heading}>Hello Again!</h1>
+      <p className={styles.paragraph}>Welcome back you've <br /> been missed!</p>
 
+      <form onSubmit={handleSubmit}>
+        <input
+          className={styles.inputs}
+          value={email}
+          onChange={handleChange('email')}
+          name="email"
+          type="email"
+          placeholder="Email"
+          autoComplete="email"
+          required
+        />
 
-  const signinForm = () => {
-    return (
+        <input
+          className={styles.inputs}
+          value={password}
+          onChange={handleChange('password')}
+          name="password"
+          type="password"
+          placeholder="Password"
+          autoComplete="current-password"
+          required
+        />
 
-      <>
+        <button className={styles.button}>Sign In</button>
 
-        <div className={styles.wrapper}>
-          <h1 className={styles.heading}>Hello Again !</h1>
-          <p className={styles.paragraph}>Welcome back you've <br /> been missed!</p>
-
-
-          <form onSubmit={handleSubmit}>
-            <input className={styles.inputs} value={email} onChange={handleChange('email')} name="email" type="text" placeholder="Email" />
-            <input className={styles.inputs} value={password} onChange={handleChange('password')} name="password" type="password" placeholder="Password" />
-
-            <button className={styles.button}>Sign In</button>
-
-            <div className={styles.notmember}>
-              Not a member ? &nbsp; <Link href="/signup"> Register Now</Link>
-            </div>
-
-            <br />
-
-
-          </form>
-
-          <Link className={styles.forgotpassbtn00} href="/auth/password/forgot">Forgot Password</Link>
-
+        <div className={styles.notmember}>
+          Not a member? &nbsp; <Link href="/signup">Register Now</Link>
         </div>
+      </form>
 
-      </>
+      <Link className={styles.forgotpassbtn00} href="/auth/password/forgot">Forgot Password</Link>
 
-    )
-  }
-
-
+      <div style={{ marginTop: '20px' }}>
+        <a
+          href="https://ebacks-tau.vercel.app/auth/google"
+          className={styles.googleSigninBtn}
+        >
+          Sign in with Google
+        </a>
+      </div>
+    </div>
+  );
 
   return (
     <div className={styles.backImg}>
-      <br />
-      <br />
       {showError()}
       {showLoading()}
       {showMessage()}
       {showForm && signinForm()}
-
-
-      <br /><br />
     </div>
-  )
-}
+  );
+};
 
-export default SigninComponent
+export default SigninComponent;
