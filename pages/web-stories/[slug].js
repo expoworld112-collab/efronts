@@ -257,15 +257,24 @@ const Stories = ({ story, errorCode }) => {
 
 
 
+// export async function getStaticPaths() {
+//   const slugs = await allslugs();
+
+// const excludedSlugs = ['/admin/edit-blogs'];
+// const filteredSlugs = slugs.filter((slugObject) => !excludedSlugs.includes(slugObject.slug));
+// const paths = filteredSlugs.map((slugObject) => ({ params: { slug: slugObject.slug } }));
+
+// return { paths, fallback: "blocking" };
+// }
 export async function getStaticPaths() {
-  const slugs = await allslugs();
+  const slugs = await getAllBlogSlugs() || [];
 
-const excludedSlugs = ['/admin/edit-blogs'];
-const filteredSlugs = slugs.filter((slugObject) => !excludedSlugs.includes(slugObject.slug));
-const paths = filteredSlugs.map((slugObject) => ({ params: { slug: slugObject.slug } }));
-
-return { paths, fallback: "blocking" };
+  return {
+    paths: slugs.map(s => ({ params: { slug: s.slug } })),
+    fallback: "blocking",
+  };
 }
+
 
 
 export async function getStaticProps({ params, res }) {

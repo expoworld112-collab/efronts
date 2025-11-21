@@ -235,24 +235,44 @@ export const feedsApi = async () => {
 };
 
 // Get all blog slugs
+// export const getAllBlogSlugs = async () => {
+//   try {
+//     const response = await fetch(`${API}/allblogslugs`, {
+//       method: 'GET',
+//       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+//     });
+
+//     if (!response.ok) {
+//       const errorText = await response.text();
+//       throw new Error(`API Error: ${response.status} - ${errorText}`);
+//     }
+
+//     return await response.json();
+//   } catch (err) {
+//     console.error("All Blog Slugs Error:", err);
+//     return { error: err.message };
+//   }
+// };
 export const getAllBlogSlugs = async () => {
   try {
-    const response = await fetch(`${API}/allblogslugs`, {
-      method: 'GET',
-      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-    });
+    const res = await fetch(`${API}/allblogslugs`);
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`API Error: ${response.status} - ${errorText}`);
+    const text = await res.text(); // read raw response
+
+    // Check content type or if JSON is valid
+    try {
+      return JSON.parse(text);
+    } catch (err) {
+      console.error("ERROR: API returned non-JSON:", text.slice(0, 150));
+      return [];
     }
 
-    return await response.json();
   } catch (err) {
-    console.error("All Blog Slugs Error:", err);
-    return { error: err.message };
+    console.error("getAllBlogSlugs fetch failed:", err);
+    return [];
   }
 };
+
 
 // ------------------------
 // FORM DATA UTILITY
