@@ -17,18 +17,24 @@ const ForgotPassword = () => {
         setValues({ ...values, message: '', error: '', [name]: e.target.value });
     };
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        setValues({ ...values, message: '', error: '' });
-        forgotPassword({ email }).then(data => {
-            if (data.error) {
-                setValues({ ...values, error: data.error });
-            } else {
-                setValues({ ...values, message: data.message, email: '', showForm: false });
-                
-            }
-        });
-    };
+   const handleSubmit = e => {
+    e.preventDefault();
+    setValues({ ...values, message: '', error: '' });
+
+    forgotPassword(email).then(data => {
+        if (data.error) {
+            setValues({ ...values, error: data.error });
+        } else {
+            setValues({
+                ...values,
+                message: data.message,
+                email: '',
+                showForm: false
+            });
+        }
+    });
+};
+
 
     const showError = () => (error ? <div className={styles.showError}>{error}</div> : '');
     const showMessage = () => (message ? <div className={styles.showMessage}>{message}</div> : '');
