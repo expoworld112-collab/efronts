@@ -6,7 +6,7 @@ import { DOMAIN, APP_NAME, API } from "../config";
 import styles from "../styles/blogposts.module.css";
 import SmallCard from '../components/blog/SmallCard';
 import Layout from '@/components/Layout';
-import Search from '@/components/blog/Search'; 
+import Search from '@/components/blog/Search';
 import { isAuth } from "../actions/auth";
 import { format, utcToZonedTime } from 'date-fns-tz';
 
@@ -14,19 +14,24 @@ const SingleBlog = ({ blog, errorCode }) => {
   const [related, setRelated] = useState([]);
   const [user, setUser] = useState(null);
 
+  // Set authenticated user
   useEffect(() => { setUser(isAuth()); }, []);
+
+  // Fetch related blogs
   useEffect(() => {
     const fetchRelated = async () => {
+      if (!blog?.slug) return;
       try {
         const data = await listRelated(blog.slug);
-        setRelated(data);
+        setRelated(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Error fetching related blogs:", err);
       }
     };
-    if (blog?.slug) fetchRelated();
-  }, [blog.slug]);
+    fetchRelated();
+  }, [blog?.slug]);
 
+  // Show 404 page if error
   if (errorCode) {
     return (
       <Layout>
@@ -34,15 +39,14 @@ const SingleBlog = ({ blog, errorCode }) => {
           <br /><br /><br />
           <div className={styles.page404}>404 Error! Page Not Found</div>
           <section className={styles.item0000}>
-            <br />
-            <Search />
-            <br /><br /><br />
+            <br /><Search /><br /><br /><br />
           </section>
         </div>
       </Layout>
     );
   }
 
+  // SEO metadata
   const head = () => (
     <Head>
       <title>{`${blog.title} - ${APP_NAME}`}</title>
@@ -62,19 +66,19 @@ const SingleBlog = ({ blog, errorCode }) => {
     </Head>
   );
 
-  const showRelatedBlog = () => related.map((blog, i) => (
+  const showRelatedBlog = () => related.map((b, i) => (
     <article key={i} className={styles.box}>
-      <SmallCard blog={blog} />
+      <SmallCard blog={b} />
     </article>
   ));
 
-  const showBlogCategories = blog => blog.categories?.map((c, i) => (
+  const showBlogCategories = blog.categories?.map((c, i) => (
     <Link key={i} href={`/categories/${c.slug}`} className={styles.blogcat}>
       {c.name}
     </Link>
   ));
 
-  const showBlogTags = blog => blog.tags?.map((t, i) => (
+  const showBlogTags = blog.tags?.map((t, i) => (
     <Link key={i} href={`/tags/${t.slug}`} className={styles.blogtag}>
       {t.name}
     </Link>
@@ -115,8 +119,8 @@ const SingleBlog = ({ blog, errorCode }) => {
               <section className="postcontent">
                 <div dangerouslySetInnerHTML={{ __html: blog.body }} />
                 <div style={{ textAlign: "center" }}>
-                  {showBlogCategories(blog)}
-                  {showBlogTags(blog)}
+                  {showBlogCategories}
+                  {showBlogTags}
                 </div>
               </section>
             </section>
@@ -134,7 +138,9 @@ const SingleBlog = ({ blog, errorCode }) => {
   );
 };
 
-// Fetch all slugs safely
+// ---------------------------------------------
+// Safe fetch all slugs
+// ---------------------------------------------
 export const allSlugs = async () => {
   try {
     const res = await fetch(`${API}/stories/slugs`);
@@ -152,19 +158,22 @@ export const allSlugs = async () => {
   }
 };
 
+// ---------------------------------------------
 // Generate static paths
+// ---------------------------------------------
 export async function getStaticPaths() {
   const slugs = await allSlugs();
   const paths = slugs.map(slug => ({ params: { slug: slug.slug || slug } })) || [];
-
   return { paths, fallback: "blocking" };
 }
 
-// Fetch blog data with formatted date
+// ---------------------------------------------
+// Fetch blog data
+// ---------------------------------------------
 export async function getStaticProps({ params }) {
   try {
     const data = await singleBlog(params.slug);
-    if (data.error) return { props: { errorCode: 404 } };
+    if (!data || data.error) return { props: { errorCode: 404 } };
 
     const utcDate = new Date(data.date);
     const istDate = utcToZonedTime(utcDate, 'Asia/Kolkata');
