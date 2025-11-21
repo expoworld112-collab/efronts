@@ -1,4 +1,3 @@
-// server.js
 import express from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
@@ -10,7 +9,6 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth2";
 import jwt from "jsonwebtoken";
 import "dotenv/config.js";
 
-// Routes
 import blogRoutes from "./routes/blog.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
@@ -20,81 +18,69 @@ import formRoutes from "./routes/form.js";
 import imageRoutes from "./routes/images.js";
 import storyRoutes from "./routes/slides.js";
 
-// Models
 import User from "./models/user.js";
-
-// Config
 import { FRONTEND } from "./config.js";
 
 const app = express();
 
-/* ----------------------------------------------------
-   ALLOWED ORIGINS
----------------------------------------------------- */
+// ------------------ CORS ------------------
+// Set headers manually for credentials
 const allowedOrigins = [
   "http://localhost:3000",
+  "http://127.0.0.1:3000",
   "https://efronts.vercel.app",
-  FRONTEND,
+  "https://efronts-3y6l.vercel.app",
+  FRONTEND
 ].filter(Boolean);
 
-/* ----------------------------------------------------
-   CORS MIDDLEWARE (Full-proof)
----------------------------------------------------- */
 app.use((req, res, next) => {
   const origin = req.headers.origin;
+
   if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader(
+    res.header("Access-Control-Allow-Origin", origin);
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header(
       "Access-Control-Allow-Methods",
       "GET,POST,PUT,DELETE,PATCH,OPTIONS"
     );
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type,Authorization"
-    );
+    res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
   }
-  if (req.method === "OPTIONS") return res.sendStatus(200); // handle preflight
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200); // handle preflight
+  }
+
   next();
 });
 
-app.set("trust proxy", 1); // for Vercel secure cookies
+app.set("trust proxy", 1);
 
-/* ----------------------------------------------------
-   DATABASE CONNECTION
----------------------------------------------------- */
+// ------------------ MONGOOSE ------------------
 mongoose.set("strictQuery", true);
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("DB connected"))
   .catch((err) => console.log("DB Error =>", err));
 
-/* ----------------------------------------------------
-   MIDDLEWARE
----------------------------------------------------- */
+// ------------------ MIDDLEWARE ------------------
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-/* ----------------------------------------------------
-   SESSION CONFIG (Cross-origin safe)
----------------------------------------------------- */
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "default_secret",
     resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: process.env.NODE_ENV === "production", // HTTPS only
+      secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       httpOnly: true,
     },
   })
 );
 
-/* ----------------------------------------------------
-   PASSPORT GOOGLE OAUTH
----------------------------------------------------- */
+// ------------------ PASSPORT ------------------
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -120,9 +106,7 @@ passport.use(
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
-/* ----------------------------------------------------
-   ROUTES
----------------------------------------------------- */
+// ------------------ ROUTES ------------------
 app.use("/api", blogRoutes);
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
@@ -134,21 +118,15 @@ app.use("/api", storyRoutes);
 
 app.get("/", (req, res) => res.json({ message: "Backend running" }));
 
-/* ----------------------------------------------------
-   SIGNIN ROUTE
----------------------------------------------------- */
+// ------------------ SIGNIN ------------------
 app.post("/api/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // TODO: Validate password here (bcrypt recommended)
-    const token = jwt.sign(
-      { _id: user._id },
-      process.env.JWT_SECRET || "Div12@",
-      { expiresIn: "10d" }
-    );
+    // TODO: validate password with bcrypt
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET || "Div12@", { expiresIn: "10d" });
 
     res.status(200).json({ user, token });
   } catch (err) {
@@ -157,16 +135,10 @@ app.post("/api/signin", async (req, res) => {
   }
 });
 
-/* ----------------------------------------------------
-   GOOGLE OAUTH ROUTES
----------------------------------------------------- */
-app.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+// ------------------ GOOGLE OAUTH ------------------
+app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
-app.get(
-  "/auth/google/callback",
+app.get("/auth/google/callback",
   passport.authenticate("google", {
     successRedirect: FRONTEND,
     failureRedirect: `${FRONTEND}/signin`,
@@ -175,11 +147,7 @@ app.get(
 
 app.get("/login/success", (req, res) => {
   if (req.user) {
-    const token = jwt.sign(
-      { _id: req.user._id },
-      process.env.JWT_SECRET || "Div12@",
-      { expiresIn: "10d" }
-    );
+    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET || "Div12@", { expiresIn: "10d" });
     res.status(200).json({ user: req.user, token });
   } else {
     res.status(401).json({ message: "Not Authorized" });
@@ -187,14 +155,12 @@ app.get("/login/success", (req, res) => {
 });
 
 app.get("/logout", (req, res, next) => {
-  req.logout((err) => {
+  req.logout(err => {
     if (err) return next(err);
     res.redirect(`${FRONTEND}/signin`);
   });
 });
 
-/* ----------------------------------------------------
-   START SERVER
----------------------------------------------------- */
+// ------------------ START SERVER ------------------
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
