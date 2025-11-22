@@ -1,124 +1,84 @@
-import styles from "../../styles/signup.module.css";
-import { useState, useEffect } from 'react';
-import { signup, isAuth, preSignup } from '../../actions/auth';
-import Link from "next/link";
-import Router from 'next/router';
-
+import { useState } from "react";
 
 const SignupComponent = () => {
-  const [values, setValues] = useState({
-    name: '',
-    username: '',
-    email: '',
-    password: '',
-    error: '',
-    loading: false,
-    message: '',
-    showForm: true
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-
-
-  const { name, username, email, password, error, loading, message, showForm } = values;
-
-  useEffect(() => {
-    isAuth() && Router.push(`/`);
-  }, []);
-
-
-
-
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setValues({ ...values, loading: true, error: false });
-    const user = { name, username, email, password };
+    setMessage("");
 
+    if (!email || !password || !confirmPassword) {
+      setMessage("All fields are required");
+      return;
+    }
 
+    if (password !== confirmPassword) {
+      setMessage("Passwords do not match");
+      return;
+    }
 
-    preSignup(user).then(data => {
-      if (data && data.error) {
-        setValues({ ...values, error: data.error, loading: false });
+    setLoading(true);
 
+    try {
+      const res = await fetch("https://ebacks-woad.vercel.app/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage("Signup successful!");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
       } else {
-        setValues({
-          ...values,
-          name: '',
-          username: '',
-          email: '',
-          password: '',
-          error: '',
-          loading: false,
-          message: data?.message,
-          // showForm: false
-        });
-
-        //   function redirect() {
-        //     // Router.replace(`/${postslug}`);
-        //     Router.push(`/signin`);
-        // }
-        // setTimeout(redirect, 400)
-
+        setMessage(data.message || "Signup failed");
       }
-    });
+    } catch (error) {
+      setMessage("Network error. Try again later.");
+    }
+
+    setLoading(false);
   };
-
-
-
-
-  const handleChange = name => e => {
-    setValues({ ...values, error: false, [name]: e.target.value });
-  };
-
-
-
-  const showLoading = () => (loading ? <div className={styles.showLoading}>Loading...</div> : '');
-  const showError = () => (error ? <div className={styles.showError}>{error}</div> : '');
-  const showMessage = () => (message ? <div className={styles.showMessage}>{message}</div> : '');
-
-
-
-  const signupForm = () => {
-    return (
-
-      <>
-        <div className={styles.wrapper}>
-          <h1 className={styles.heading}>New User ?</h1>
-          <p className={styles.paragraph}>Please create an account <br /> with us</p>
-
-
-          <form autoComplete="off" onSubmit={handleSubmit}>
-            <input className={styles.inputs} value={name} onChange={handleChange('name')} name="name" type="text" placeholder="Name" />
-            <input className={styles.inputs} value={username} onChange={handleChange('username')} name="username" type="text" placeholder="Username" />
-            <input className={styles.inputs} value={email} onChange={handleChange('email')} name="email" type="text" placeholder="Email" />
-            <input className={styles.inputs} value={password} onChange={handleChange('password')} name="password" type="password" placeholder="Password" />
-
-
-            <button className={styles.button}>Sign Up</button>
-
-            <div className={styles.notmember}>
-              Already a member ? &nbsp; <Link href="/signin"> Sign In</Link>
-            </div>
-          </form>
-        </div>
-      </>
-
-    )
-  }
-
 
   return (
-    <div className={styles.backImg}>
-      <br />
-      <br />
-      {showError()}
-      {showLoading()}
-      {showMessage()}
-      {showForm && signupForm()}
-      <br /><br />
-
+    <div style={{ maxWidth: "400px", margin: "2rem auto", padding: "1rem", border: "1px solid #ccc", borderRadius: "8px" }}>
+      <h2 style={{ textAlign: "center" }}>Signup</h2>
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? "Signing up..." : "Signup"}
+        </button>
+      </form>
+      {message && <p style={{ marginTop: "1rem", color: "red", textAlign: "center" }}>{message}</p>}
     </div>
-  )
-}
+  );
+};
 
-export default SignupComponent
+export default SignupComponent;

@@ -1,12 +1,13 @@
-import SignupComponent from "../components/auth/SignupComponent"
-import Layout from "../components/Layout"
-const signup = () => {
+// pages/signup.jsx
+import Layout from "../components/Layout";
+import SignupComponent from "../components/auth/SignupComponent";
+
+const Signup = () => {
   return (
     <Layout>
-      <SignupComponent/>
-      </Layout>
-      
-  )
-}
+      <SignupComponent />
+    </Layout>
+  );
+};
 
-export default signup
+export default Signup;
