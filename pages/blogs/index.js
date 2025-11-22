@@ -147,7 +147,7 @@ const Blogs = ({ blogs, router }) => {
 
 
 
-/*
+
 export async function getServerSideProps() {
   const data = await listBlogsWithCategoriesAndTags();
   if (data.error) {console.log(data.error);}
@@ -156,7 +156,7 @@ export async function getServerSideProps() {
     return {props: {blogs: {...data, formattedDate }}}; 
   }
 }
-*/
+
 
 export async function getServerSideProps() {
   const data = await listBlogsWithCategoriesAndTags();
